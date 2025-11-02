@@ -1,26 +1,187 @@
+/* ---- Tailwind core ---- */
 @import "tailwindcss";
 
+/* ------------------------------------------------------------
+   Design tokens (CSS variables) + Tailwind theme bridge
+   - 라이트/다크 색상 토큰
+   - Tailwind v4 @theme inline으로 토큰 매핑
+-------------------------------------------------------------*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+    /* Surface / text */
+    --background: #ffffff;
+    --foreground: #0f172a; /* slate-900 */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    /* Brand / accent */
+    --primary: #3b82f6; /* blue-500 */
+    --primary-foreground: #ffffff;
+
+    /* Sub surfaces */
+    --card: #ffffff;
+    --card-foreground: #0f172a;
+    --muted: #f1f5f9; /* slate-100 */
+    --muted-foreground: #475569; /* slate-600 */
+    --border: #e2e8f0; /* slate-200 */
+
+    /* States */
+    --ring: #60a5fa; /* blue-400 */
+    --destructive: #ef4444; /* red-500 */
+    --destructive-foreground: #ffffff;
+
+    /* Radius */
+    --radius: 0.75rem; /* 12px */
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #e5e7eb; /* gray-200 */
+
+        --primary: #60a5fa; /* blue-400 */
+        --primary-foreground: #0b1220;
+
+        --card: #0f1115;
+        --card-foreground: #e5e7eb;
+
+        --muted: #0d0f14;
+        --muted-foreground: #94a3b8; /* slate-400 */
+        --border: #1f2937; /* gray-800 */
+
+        --ring: #3b82f6; /* blue-500 */
+        --destructive: #f87171; /* red-400 */
+        --destructive-foreground: #0b1220;
+    }
+}
+
+/* Tailwind theme bridge: 배경/글자/폰트/라운드 토큰을 Tailwind에서 사용 가능하게 */
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --color-ring: var(--ring);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --radius-md: var(--radius);
+    --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+        Segoe UI, Roboto, "Noto Sans KR", Arial, "Apple Color Emoji",
+        "Segoe UI Emoji";
+    --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+        Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* ------------------------------------------------------------
+   Base resets & typography
+-------------------------------------------------------------*/
+html,
+body {
+    height: 100%;
+}
+
+html {
+    /* 부드러운 폰트 렌더링 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans, ui-sans-serif), system-ui, -apple-system,
+        Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* 링크/버튼 포커스 접근성 */
+:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* 텍스트 선택 색 */
+::selection {
+    background: color-mix(in oklab, var(--primary) 30%, transparent);
+}
+
+/* 기본 요소 */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* 스크롤바 (크롬/엣지) */
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 25%, transparent);
+    border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* 모션 감소 환경 고려 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ------------------------------------------------------------
+   Handy utilities (전역 유틸 클래스)
+   - 카드, 섹션, 컨테이너 등
+-------------------------------------------------------------*/
+.container-prose {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+.card {
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+
+.section {
+    margin-block: 1.25rem;
+}
+
+.hr {
+    height: 1px;
+    background: var(--border);
+    border: 0;
+    margin: 1rem 0;
+}
+
+/* 헤딩 간격 */
+h1,
+h2,
+h3 {
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+h1 {
+    font-weight: 800;
+}
+h2 {
+    font-weight: 700;
+}
+h3 {
+    font-weight: 600;
 }
