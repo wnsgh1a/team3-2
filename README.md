@@ -44,7 +44,8 @@
     { "name": "consistency", "score": 75 }
   ],
   "summary": "기본 구조는 괜찮지만 효율/일관성 개선 필요."
-}```
+}
+```
 
 3️⃣ 프론트엔드 (Next.js)
 .env.local 파일에 FastAPI 서버 주소 설정:
