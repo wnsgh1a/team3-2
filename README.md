@@ -47,7 +47,7 @@
 }
 ```
 
-3️⃣ 프론트엔드 (Next.js)
+###3️⃣ 프론트엔드 (Next.js)
 .env.local 파일에 FastAPI 서버 주소 설정:
 
 ini
